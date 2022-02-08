@@ -51,7 +51,6 @@ public class ComputerPlayer
 		while (true)
 		{
 			randomCardID=randomSelecter.nextInt(10);
-			System.out.println(randomCardID);
 			if (isValidAction[randomCardID])
 			{
 				isValidAction[randomCardID]=false;

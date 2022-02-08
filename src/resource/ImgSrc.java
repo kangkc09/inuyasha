@@ -9,7 +9,30 @@ import javax.imageio.ImageIO;
 public class ImgSrc
 {
 	private BufferedImage img = null;
+	
+	public BufferedImage srcPlayer1Win()
+	{
+		try
+		{
+			img = ImageIO.read(new File("src/resourceFile/inuplayer1win.png"));
+		} catch (IOException e)
+		{
+			System.out.println(e);
+		}
+		return img;
+	}
 
+	public BufferedImage srcPlayer2Win()
+	{
+		try
+		{
+			img = ImageIO.read(new File("src/resourceFile/inuplayer2win.png"));
+		} catch (IOException e)
+		{
+			System.out.println(e);
+		}
+		return img;
+	}
 	public BufferedImage srcNextRound()
 	{
 		try

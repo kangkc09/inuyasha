@@ -132,27 +132,27 @@ public class Sesshomaru extends PlayableCharacter
 	public int getSkill1Damage()
 	{
 		// TODO Auto-generated method stub
-		return 0;
+		return 40;
 	}
 
 	@Override
 	public int getSkill2Damage()
 	{
 		// TODO Auto-generated method stub
-		return 0;
+		return 25;
 	}
 
 	@Override
 	public int getSkill3Damage()
 	{
 		// TODO Auto-generated method stub
-		return 0;
+		return 60;
 	}
 
 	@Override
 	public int getSkill4Damage()
 	{
 		// TODO Auto-generated method stub
-		return 0;
+		return 30;
 	}
 }

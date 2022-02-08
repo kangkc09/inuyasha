@@ -1,12 +1,10 @@
 package game;
 
-import java.awt.Graphics;
 import java.util.Random;
 
 import javax.swing.JFrame;
 
 import gameInterface.InuyashaActionPickPage;
-import resource.ImgSrc;
 import resource.Inuyasha;
 import resource.Kagome;
 import resource.Kagura;
@@ -19,44 +17,51 @@ import resource.Sesshomaru;
 
 public class InuyashaCharacterSelect
 {
-	private static final int PLAYER1_POSITION_X=175;
-	private static final int PLAYER1_POSITION_Y=15;
-	private static final int PLAYER1_SIZE_X=150;
-	private static final int PLAYER1_SIZE_Y=150;
-	
-	private int player1CharacterID=0;
-	private int player2CharacterID=0;
-	private boolean isPlayer1Picked=false;
-	private boolean isPlayer2Picked=false;
+	private static final int PLAYER1_POSITION_X = 175;
+	private static final int PLAYER1_POSITION_Y = 15;
+	private static final int PLAYER1_SIZE_X = 150;
+	private static final int PLAYER1_SIZE_Y = 150;
+
+	private int player1CharacterID = 0;
+	private int player2CharacterID = 0;
+	private boolean isPlayer1Picked = false;
+	private boolean isPlayer2Picked = false;
 	private JFrame frm;
-	
-	public InuyashaCharacterSelect(JFrame frm) {
-		this.frm=frm;
+
+	public InuyashaCharacterSelect(JFrame frm)
+	{
+		this.frm = frm;
 	}
 
 	public void showPlayer1Character(int characterID)
-	{	
-		player1CharacterID=characterID;
+	{
+		player1CharacterID = characterID;
 		frm.repaint();
 	}
-	
+
 	public void showPlayer2Character(int characterID)
 	{
-		player2CharacterID=characterID;
+		player2CharacterID = characterID;
 		frm.repaint();
 	}
-	public void cancelPlayer1Character() {
-		if(!isPlayer2Picked) {
-			isPlayer1Picked=false;
-			player1CharacterID=0;
+
+	public void cancelPlayer1Character()
+	{
+		if (!isPlayer2Picked)
+		{
+			isPlayer1Picked = false;
+			player1CharacterID = 0;
 			frm.repaint();
 		}
 	}
-	public void cancelPlayer2Character() {
-		isPlayer2Picked=false;
-		player2CharacterID=0;
+
+	public void cancelPlayer2Character()
+	{
+		isPlayer2Picked = false;
+		player2CharacterID = 0;
 		frm.repaint();
 	}
+
 	public void showCharacter(int characterID)
 	{
 		if (!isPlayer1Picked)
@@ -74,33 +79,42 @@ public class InuyashaCharacterSelect
 		if (!isPlayer1Picked)
 		{
 			player1CharacterID = characterID;
-			isPlayer1Picked=true;
+			isPlayer1Picked = true;
 		} else if (!isPlayer2Picked)
 		{
 			player2CharacterID = characterID;
-			isPlayer2Picked=true;
+			isPlayer2Picked = true;
 		}
-		
+
 	}
-	public void pickRandom() {
+
+	public void pickRandom()
+	{
 		Random randomSelecter = new Random();
 		int randomID = (randomSelecter.nextInt(8)) + 1;
 		pickCharacter(randomID);
 	}
-	public int getPlayer1CharacterID() {
+
+	public int getPlayer1CharacterID()
+	{
 		return player1CharacterID;
 	}
-	public int getPlayer2CharacterID() {
+
+	public int getPlayer2CharacterID()
+	{
 		return player2CharacterID;
 	}
-	public void goToActionPickPage() {
-		if(isPlayer2Picked) {
+
+	public void goToActionPickPage()
+	{
+		if (isPlayer2Picked)
+		{
 			PlayableCharacter player1Character = constructCharacter(player1CharacterID);
 			PlayableCharacter player2Character = constructCharacter(player2CharacterID);
 			player1Character.setFirstPlayerXY();
 			player2Character.setSecondPlayerXY();
 			InuyashaActionPickPage actionPickPage = new InuyashaActionPickPage();
-			InuyashaActionPick actionPick=new InuyashaActionPick(actionPickPage);
+			InuyashaActionPick actionPick = new InuyashaActionPick(actionPickPage);
 			actionPick.setPlayer1Character(player1Character);
 			actionPick.setPlayer2Character(player2Character);
 			actionPick.initializeCostAndEN();
@@ -110,6 +124,7 @@ public class InuyashaCharacterSelect
 			frm.setVisible(false);
 		}
 	}
+
 	public PlayableCharacter constructCharacter(int playerID)
 	{
 		switch (playerID)
@@ -137,6 +152,5 @@ public class InuyashaCharacterSelect
 		}
 		return null;
 	}
-
 
 }

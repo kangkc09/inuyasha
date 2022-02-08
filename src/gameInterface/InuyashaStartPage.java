@@ -14,11 +14,11 @@ public class InuyashaStartPage
 {
 	private static final int SCREEN_WIDTH = 800;
 	private static final int SCREEN_HEIGHT = 635;
-	private static final int START_BUTTON_POSITION_X=323;
-	private static final int START_BUTTON_POSITION_Y=524;
-	private static final int START_BUTTON_SIZE_X=155;
-	private static final int START_BUTTON_SIZE_Y=38;
-	
+	private static final int START_BUTTON_POSITION_X = 323;
+	private static final int START_BUTTON_POSITION_Y = 524;
+	private static final int START_BUTTON_SIZE_X = 155;
+	private static final int START_BUTTON_SIZE_Y = 38;
+
 	private ImgSrc imgsrc = new ImgSrc();
 
 	public InuyashaStartPage(JFrame frm)

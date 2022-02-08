@@ -10,47 +10,54 @@ import resource.Action;
 import resource.PlayableCharacter;
 
 public class InuyashaPlay
-{	
-	private static final int NUMBER_OF_ACTION=10;
-	private static final int NUMBER_OF_LIST=3;
-	private static final int MAP_ROW=3;
-	private static final int MAP_COLUMN=4;
-	private static final int PLAYER1=1;
-	private static final int PLAYER2=2;
-	private static final int DOWN=1;
-	private static final int UP=2;
-	private static final int RIGHT=3;
-	private static final int LEFT=4;
-	private static final int PLAYER1_LIST_INIT_POSITION=265;
-	private static final int PLAYER2_LIST_INIT_POSITION=400;
-	private static final int PLAYER_LIST_TERM_SIZE=115;
-	private static final int SLEEP_TIME_1SEC=1000;
-	private static final int SLEEP_TIME_MOVE=5;
-	private static final int SLEEP_TIME_KNOCKBACK=4;
-	private static final int RECOVER_EN_END_TURN=15;
+{
+	private static final int NUMBER_OF_ACTION = 10;
+	private static final int NUMBER_OF_LIST = 3;
+	private static final int MAP_ROW = 3;
+	private static final int MAP_COLUMN = 4;
+	private static final int PLAYER1 = 1;
+	private static final int PLAYER2 = 2;
+	private static final int DOWN = 1;
+	private static final int UP = 2;
+	private static final int RIGHT = 3;
+	private static final int LEFT = 4;
+	private static final int PLAYER1_LIST_INIT_POSITION = 265;
+	private static final int PLAYER2_LIST_INIT_POSITION = 400;
+	private static final int PLAYER_LIST_TERM_SIZE = 115;
+	private static final int SLEEP_TIME_1SEC = 1000;
+	private static final int SLEEP_TIME_3SEC = 3000;
+	private static final int SLEEP_TIME_MOVE = 5;
+	private static final int SLEEP_TIME_KNOCKBACK = 4;
+	private static final int RECOVERY_EN = 15;
+	private static final int RECOVER_EN_END_TURN = 15;
+	private static final int KNOCKBACK_DISTANCE = 30;
+	private static final int REDUCE_DAMAGE_BY_GUARD = 15;
 	private PlayableCharacter player1Character;
 	private PlayableCharacter player2Character;
 	private InuyashaPlayPage playPage;
-	private int player1X=0;
-	private int player1Y=0;
-	private int player2X=0;
-	private int player2Y=0;
+	private int player1X = 0;
+	private int player1Y = 0;
+	private int player2X = 0;
+	private int player2Y = 0;
 	private boolean isDone = false;
 	private boolean isPlayer1GuardOn = false, isPlayer2GuardOn = false;
-	private boolean isPlayer1ENUp=false, isPlayer2ENUp=false;
-	private boolean[] isOpenActionList=new boolean[NUMBER_OF_ACTION];
+	private boolean isPlayer1ENUp = false, isPlayer2ENUp = false;
+	private boolean[] isOpenActionList = new boolean[NUMBER_OF_ACTION];
 	private Action actionEnum;
 	private ArrayList<Integer> redList = new ArrayList<Integer>();
-	
-	public InuyashaPlay(InuyashaPlayPage playPage){
+
+	public InuyashaPlay(InuyashaPlayPage playPage)
+	{
 		Arrays.fill(isOpenActionList, false);
-		this.playPage=playPage;
+		this.playPage = playPage;
 	}
+
 	public void gameStart()
 	{
 		Turn turn = new Turn();
 		turn.start();
 	}
+
 	class Turn extends Thread
 	{
 		class Action extends Thread
@@ -141,12 +148,12 @@ public class InuyashaPlay
 			{
 				if (player == PLAYER1)
 				{
-					player1X=playPage.largeMapPlayer1PositionX(player1Character.getX());
-					player1Y=playPage.largeMapPositionY(player1Character.getY());
+					player1X = playPage.largeMapPlayer1PositionX(player1Character.getX());
+					player1Y = playPage.largeMapPositionY(player1Character.getY());
 				} else if (player == PLAYER2)
 				{
-					player2X=playPage.largeMapPlayer2PositionX(player2Character.getX());
-					player2Y=playPage.largeMapPositionY(player2Character.getY());
+					player2X = playPage.largeMapPlayer2PositionX(player2Character.getX());
+					player2Y = playPage.largeMapPositionY(player2Character.getY());
 				}
 			}
 
@@ -201,7 +208,7 @@ public class InuyashaPlay
 					{
 						System.out.println(e);
 					}
-					
+
 				}
 			}
 
@@ -210,14 +217,14 @@ public class InuyashaPlay
 				setxy();
 				if (player == PLAYER1)
 				{
-					if (player1Character.getY() < 3)
+					if (player1Character.getY() < MAP_ROW - 1)
 						player1Character.setY(player1Character.getY() + 1);
-					move(player1Y, playPage.largeMapPositionY(player1Character.getY()), 1);
+					move(player1Y, playPage.largeMapPositionY(player1Character.getY()), DOWN);
 				} else if (player == PLAYER2)
 				{
-					if (player2Character.getY() < 3)
+					if (player2Character.getY() < MAP_ROW - 1)
 						player2Character.setY(player2Character.getY() + 1);
-					move(player2Y, playPage.largeMapPositionY(player2Character.getY()), 1);
+					move(player2Y, playPage.largeMapPositionY(player2Character.getY()), DOWN);
 				}
 			}
 
@@ -228,12 +235,12 @@ public class InuyashaPlay
 				{
 					if (player1Character.getY() > 0)
 						player1Character.setY(player1Character.getY() - 1);
-					move(player1Y, playPage.largeMapPositionY(player1Character.getY()), 2);
+					move(player1Y, playPage.largeMapPositionY(player1Character.getY()), UP);
 				} else if (player == PLAYER2)
 				{
 					if (player2Character.getY() > 0)
 						player2Character.setY(player2Character.getY() - 1);
-					move(player2Y, playPage.largeMapPositionY(player2Character.getY()), 2);
+					move(player2Y, playPage.largeMapPositionY(player2Character.getY()), UP);
 				}
 			}
 
@@ -242,14 +249,14 @@ public class InuyashaPlay
 				setxy();
 				if (player == PLAYER1)
 				{
-					if (player1Character.getX() < 3)
+					if (player1Character.getX() < MAP_COLUMN - 1)
 						player1Character.setX(player1Character.getX() + 1);
-					move(player1X, playPage.largeMapPlayer1PositionX(player1Character.getX()), 3);
+					move(player1X, playPage.largeMapPlayer1PositionX(player1Character.getX()), RIGHT);
 				} else if (player == PLAYER2)
 				{
-					if (player2Character.getX() < 3)
+					if (player2Character.getX() < MAP_COLUMN - 1)
 						player2Character.setX(player2Character.getX() + 1);
-					move(player2X, playPage.largeMapPlayer2PositionX(player2Character.getX()), 3);
+					move(player2X, playPage.largeMapPlayer2PositionX(player2Character.getX()), RIGHT);
 				}
 			}
 
@@ -260,12 +267,12 @@ public class InuyashaPlay
 				{
 					if (player1Character.getX() > 0)
 						player1Character.setX(player1Character.getX() - 1);
-					move(player1X, playPage.largeMapPlayer1PositionX(player1Character.getX()), 4);
+					move(player1X, playPage.largeMapPlayer1PositionX(player1Character.getX()), LEFT);
 				} else if (player == PLAYER2)
 				{
 					if (player2Character.getX() > 0)
 						player2Character.setX(player2Character.getX() - 1);
-					move(player2X, playPage.largeMapPlayer2PositionX(player2Character.getX()), 4);
+					move(player2X, playPage.largeMapPlayer2PositionX(player2Character.getX()), LEFT);
 				}
 			}
 
@@ -288,26 +295,26 @@ public class InuyashaPlay
 					{
 						if (player == PLAYER2)
 						{
-							player1X=playPage.largeMapPlayer1PositionX(player1Character.getX());
-							player1Y=playPage.largeMapPositionY(player1Character.getY());
+							player1X = playPage.largeMapPlayer1PositionX(player1Character.getX());
+							player1Y = playPage.largeMapPositionY(player1Character.getY());
 						} else if (player == PLAYER1)
 						{
-							player2X=playPage.largeMapPlayer2PositionX(player2Character.getX());
-							player2Y=playPage.largeMapPositionY(player2Character.getY());
+							player2X = playPage.largeMapPlayer2PositionX(player2Character.getX());
+							player2Y = playPage.largeMapPositionY(player2Character.getY());
 						}
-						for (int i = 0; i < 30; i++)
+						for (int i = 0; i < KNOCKBACK_DISTANCE; i++)
 						{
-							if (i < 15)
+							if (i < KNOCKBACK_DISTANCE / 2)
 							{
 								if (player == PLAYER2)
 								{
-									if(player1Character.getX()>player2Character.getX()) 
+									if (player1Character.getX() > player2Character.getX())
 										player1X++;
 									else
 										player1X--;
 								} else if (player == PLAYER1)
 								{
-									if(player1Character.getX()>player2Character.getX()) 
+									if (player1Character.getX() > player2Character.getX())
 										player2X--;
 									else
 										player2X++;
@@ -316,19 +323,19 @@ public class InuyashaPlay
 							{
 								if (player == PLAYER2)
 								{
-									if(player1Character.getX()>player2Character.getX())
+									if (player1Character.getX() > player2Character.getX())
 										player1X--;
 									else
 										player1X++;
 								} else if (player == PLAYER1)
 								{
-									if(player1Character.getX()>player2Character.getX()) 
+									if (player1Character.getX() > player2Character.getX())
 										player2X++;
 									else
 										player2X--;
 								}
 							}
-							playPage.move(3-player);
+							playPage.move(3 - player); // the foe player
 							try
 							{
 								Thread.sleep(SLEEP_TIME_KNOCKBACK);
@@ -346,7 +353,7 @@ public class InuyashaPlay
 					{
 						if (isPlayer2GuardOn)
 						{
-							player2Character.setHP(player2Character.getHP() - damage + 15);
+							player2Character.setHP(player2Character.getHP() - damage + REDUCE_DAMAGE_BY_GUARD);
 						} else
 						{
 							player2Character.setHP(player2Character.getHP() - damage);
@@ -368,7 +375,7 @@ public class InuyashaPlay
 					{
 						if (isPlayer1GuardOn)
 						{
-							player1Character.setHP(player1Character.getHP() - damage + 15);
+							player1Character.setHP(player1Character.getHP() - damage + REDUCE_DAMAGE_BY_GUARD);
 						} else
 						{
 							player1Character.setHP(player1Character.getHP() - damage);
@@ -397,12 +404,12 @@ public class InuyashaPlay
 			{
 				if (player == PLAYER1)
 				{
-					player1Character.setEN(player1Character.getEN() + 15);
-					isPlayer1ENUp=true;
+					player1Character.setEN(player1Character.getEN() + RECOVERY_EN);
+					isPlayer1ENUp = true;
 				} else if (player == PLAYER2)
 				{
-					player2Character.setEN(player2Character.getEN() + 15);
-					isPlayer2ENUp=true;
+					player2Character.setEN(player2Character.getEN() + RECOVERY_EN);
+					isPlayer2ENUp = true;
 				}
 				playPage.repaintPlayer(player);
 				try
@@ -414,15 +421,15 @@ public class InuyashaPlay
 				}
 				if (player == PLAYER1)
 				{
-					isPlayer1ENUp=false;
+					isPlayer1ENUp = false;
 				} else if (player == PLAYER2)
 				{
-					isPlayer2ENUp=false;
+					isPlayer2ENUp = false;
 				}
 				playPage.repaintPlayer(player);
 			}
 		}
-		
+
 		@Override
 		public void run()
 		{
@@ -453,7 +460,8 @@ public class InuyashaPlay
 				{
 					System.out.println(e);
 				}
-				if (player1Character.getActionsID()[i] < actionEnum.skill1.ordinal() && player2Character.getActionsID()[i] >= actionEnum.skill1.ordinal())
+				if (player1Character.getActionsID()[i] < actionEnum.skill1.ordinal()
+						&& player2Character.getActionsID()[i] >= actionEnum.skill1.ordinal())
 				{
 					player1.start();
 					try
@@ -520,23 +528,25 @@ public class InuyashaPlay
 				 * 3. 카드를 옮긴다.
 				 */
 				int k = 0;
-				for (int j = i; j < NUMBER_OF_LIST-1; j++)
+				for (int j = i; j < NUMBER_OF_LIST - 1; j++)
 				{
-					playPage.setPositionActionList(PLAYER1, j+1, PLAYER1_LIST_INIT_POSITION - PLAYER_LIST_TERM_SIZE * k);
-					playPage.setPositionActionList(PLAYER2, j+1, PLAYER2_LIST_INIT_POSITION + PLAYER_LIST_TERM_SIZE * k);
+					playPage.setPositionActionList(PLAYER1, j + 1,
+							PLAYER1_LIST_INIT_POSITION - PLAYER_LIST_TERM_SIZE * k);
+					playPage.setPositionActionList(PLAYER2, j + 1,
+							PLAYER2_LIST_INIT_POSITION + PLAYER_LIST_TERM_SIZE * k);
 					k++;
 				}
-				if (i < NUMBER_OF_LIST-1)
+				if (i < NUMBER_OF_LIST - 1)
 				{
 					playPage.setInvisibleActionList(PLAYER1, i);
 					playPage.setInvisibleActionList(PLAYER2, i);
 				}
 				if (player1Character.getHP() == 0)
 				{
-					System.out.println("player2 wins");
+					playPage.winGame(PLAYER2);
 					try
 					{
-						Thread.sleep(SLEEP_TIME_1SEC);
+						Thread.sleep(SLEEP_TIME_3SEC);
 					} catch (InterruptedException e)
 					{
 						System.out.println(e);
@@ -544,10 +554,10 @@ public class InuyashaPlay
 					System.exit(0);
 				} else if (player2Character.getHP() == 0)
 				{
-					System.out.println("player1 wins");
+					playPage.winGame(PLAYER1);
 					try
 					{
-						Thread.sleep(SLEEP_TIME_1SEC);
+						Thread.sleep(SLEEP_TIME_3SEC);
 					} catch (InterruptedException e)
 					{
 						System.out.println(e);
@@ -561,10 +571,13 @@ public class InuyashaPlay
 			player2Character.setEN(player2Character.getEN() + RECOVER_EN_END_TURN);
 		}
 	}
-	public void goToActionPickPage() {
-		if(isDone) {
+
+	public void goToActionPickPage()
+	{
+		if (isDone)
+		{
 			InuyashaActionPickPage actionPickPage = new InuyashaActionPickPage();
-			InuyashaActionPick actionPick=new InuyashaActionPick(actionPickPage);
+			InuyashaActionPick actionPick = new InuyashaActionPick(actionPickPage);
 			actionPick.setPlayer1Character(player1Character);
 			actionPick.setPlayer2Character(player2Character);
 			actionPick.initializeCostAndEN();
@@ -574,6 +587,7 @@ public class InuyashaPlay
 			playPage.setVisible(false);
 		}
 	}
+
 	public boolean isInRange(int player)
 	{
 		if (player == PLAYER1)
@@ -593,6 +607,7 @@ public class InuyashaPlay
 		}
 		return false;
 	}
+
 	public void fillRedRect(int player, Stack<Integer> damagelist)
 	{
 		while (!damagelist.isEmpty())
@@ -607,8 +622,9 @@ public class InuyashaPlay
 						redList.add(XYToIndex(player1Character.getX() - 1, player1Character.getY() + 1));
 				} else if (player == PLAYER2)
 				{
-					if (canFill(player2Character.getX() - 1, player2Character.getY() + 1));
-						redList.add(XYToIndex(player2Character.getX() - 1, player2Character.getY() + 1));
+					if (canFill(player2Character.getX() - 1, player2Character.getY() + 1))
+						;
+					redList.add(XYToIndex(player2Character.getX() - 1, player2Character.getY() + 1));
 				}
 				break;
 			case 2:
@@ -706,18 +722,23 @@ public class InuyashaPlay
 		}
 		playPage.repaintMap();
 	}
-	public boolean isInRedList(int x, int y) {
-		return redList.contains(XYToIndex(x,y));
+
+	public boolean isInRedList(int x, int y)
+	{
+		return redList.contains(XYToIndex(x, y));
 	}
+
 	public void clearRedRect()
 	{
 		redList.clear();
 		playPage.repaintMap();
 	}
+
 	public boolean canFill(int x, int y)
 	{
 		return (x >= 0 && x < MAP_COLUMN && y >= 0 && y < MAP_ROW);
 	}
+
 	public int XYToIndex(int X, int Y)
 	{
 		if (Y == 0)
@@ -762,64 +783,101 @@ public class InuyashaPlay
 		}
 		return 0;
 	}
-	public int getPlayer1X() {
+
+	public int getPlayer1X()
+	{
 		return player1X;
 	}
-	public int getPlayer1Y() {
+
+	public int getPlayer1Y()
+	{
 		return player1Y;
 	}
-	public int getPlayer2X() {
+
+	public int getPlayer2X()
+	{
 		return player2X;
 	}
-	public int getPlayer2Y() {
+
+	public int getPlayer2Y()
+	{
 		return player2Y;
 	}
-	public void setPlayer1X(int x) {
-		player1X=x;
+
+	public void setPlayer1X(int x)
+	{
+		player1X = x;
 	}
-	public void setPlayer1Y(int y) {
-		player1Y=y;
+
+	public void setPlayer1Y(int y)
+	{
+		player1Y = y;
 	}
-	public void setPlayer2X(int x) {
-		player2X=x;
+
+	public void setPlayer2X(int x)
+	{
+		player2X = x;
 	}
-	public void setPlayer2Y(int y) {
-		player2Y=y;
+
+	public void setPlayer2Y(int y)
+	{
+		player2Y = y;
 	}
-	public boolean getIsPlayer1ENUp() {
+
+	public boolean getIsPlayer1ENUp()
+	{
 		return isPlayer1ENUp;
 	}
-	public boolean getIsPlayer2ENUp() {
+
+	public boolean getIsPlayer2ENUp()
+	{
 		return isPlayer2ENUp;
 	}
-	public boolean getIsPlayer1GuardOn() {
+
+	public boolean getIsPlayer1GuardOn()
+	{
 		return isPlayer1GuardOn;
 	}
-	public boolean getIsPlayer2GuardOn() {
+
+	public boolean getIsPlayer2GuardOn()
+	{
 		return isPlayer2GuardOn;
 	}
-	public boolean[] getIsOpenActionList() {
+
+	public boolean[] getIsOpenActionList()
+	{
 		return isOpenActionList;
 	}
-	public boolean getIsDone() {
+
+	public boolean getIsDone()
+	{
 		return isDone;
 	}
+
 	public int CalculateBarLength(int max, int value)
 	{
 		double result = 0.0;
 		result = max * ((double) value / 100);
 		return (int) result;
 	}
-	public void setPlayer1Character(PlayableCharacter character) {
-		player1Character=character;
+
+	public void setPlayer1Character(PlayableCharacter character)
+	{
+		player1Character = character;
 	}
-	public void setPlayer2Character(PlayableCharacter character) {
-		player2Character=character;
+
+	public void setPlayer2Character(PlayableCharacter character)
+	{
+		player2Character = character;
 	}
-	public PlayableCharacter getPlayer1Character() {
+
+	public PlayableCharacter getPlayer1Character()
+	{
 		return player1Character;
 	}
-	public PlayableCharacter getPlayer2Character() {
+
+	public PlayableCharacter getPlayer2Character()
+	{
 		return player2Character;
 	}
 }
