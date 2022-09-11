@@ -623,8 +623,7 @@ public class InuyashaPlay
 				} else if (player == PLAYER2)
 				{
 					if (canFill(player2Character.getX() - 1, player2Character.getY() + 1))
-						;
-					redList.add(XYToIndex(player2Character.getX() - 1, player2Character.getY() + 1));
+						redList.add(XYToIndex(player2Character.getX() - 1, player2Character.getY() + 1));
 				}
 				break;
 			case 2:
